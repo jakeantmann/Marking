@@ -1,0 +1,40 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                          %
+% Controlling Maxima using batch/txt files %
+%                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Batch file that runs maxima with the contents of testinput.txt as input:
+cd C:\Users\User\Dropbox\Personal\Sandbox
+type testinput.txt | testbatch1.bat
+
+testinput.txt:
+2+3;
+
+testbatch1.bat:
+title My Test Batch File
+:: See the title at the top
+cd C:\maxima-5.41.0a\bin
+maxima.bat
+pause
+
+Thing that made it sort of click: http://www.robvanderwoude.com/battech_redirection.php
+Overview of redirection methods (ie how | etc works): http://www.robvanderwoude.com/redirection.php
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                               %
+% Creating outputs using Maxima %
+%                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+writefile(name) saves a log of input/output strings
+
+stringout("testname.txt","hello");
+
+stringout("testname.txt",5);
+
+stringout("testname.txt",1+2);
+ - testname.txt says: 3;
+ - This is very useful! Great success!
+ 
+Overview of other methods: http://maxima.sourceforge.net/docs/tutorial/en/gaertner-tutorial-revision/Pages/FileUse001.htm
