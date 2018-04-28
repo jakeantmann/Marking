@@ -1,0 +1,6 @@
+How to update my git repository in git bash:
+
+cd /c/Users/User/Desktop/Marking
+git config --global user.email "you@example.com"
+git commit -m "description"
+git push
