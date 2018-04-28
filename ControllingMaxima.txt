@@ -21,6 +21,25 @@ pause
 Thing that made it sort of click: http://www.robvanderwoude.com/battech_redirection.php
 Overview of redirection methods (ie how | etc works): http://www.robvanderwoude.com/redirection.php
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                  %
+% Opening .mac files from anywhere %
+%                                  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Useful: http://users.math.msu.edu/users/sen/maxima/tutorials/tutorial_2.pdf
+
+Find current search directories: file_search_maxima;
+
+Run the following to add a folder to the search:
+
+file_search_maxima:
+append(file_search_maxima,
+    ["C:/Users/User/Desktop/Marking/py2max/$$$.{mac,mc,wxm}"]);
+The tutorial also shows how to make this permanent
+
+Load a .mac file: load("input.mac");
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                               %
 % Creating outputs using Maxima %
@@ -29,12 +48,108 @@ Overview of redirection methods (ie how | etc works): http://www.robvanderwoude.
 
 writefile(name) saves a log of input/output strings
 
+examples of stringout:
 stringout("testname.txt","hello");
-
 stringout("testname.txt",5);
-
 stringout("testname.txt",1+2);
  - testname.txt says: 3;
  - This is very useful! Great success!
  
 Overview of other methods: http://maxima.sourceforge.net/docs/tutorial/en/gaertner-tutorial-revision/Pages/FileUse001.htm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                         %
+% Capturing Maxima output %
+%                         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Output is automatically captured using >.
+>> (overwrite) could be a better option
+
+Options not fully explored:
+http://maxima.sourceforge.net/docs/manual/maxima_13.html
+http://maxima.sourceforge.net/docs/manual/maxima_32.html
+pathname looks like a possible route
+
+We want to capture the output of the piped maxima code.
+I can think of two ways to do this:
+1) The Maxima code saves the information in a place of our choice
+2) The output is automatically captured [This what was used]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                      %
+% Converting the output .txt file into a better format %
+%                                                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The initial output contains all the information we need, but in a bad format.
+
+%% Input:
+a:2;
+b:3;
+a+b;
+
+%% Output:
+C:\Users\User\Desktop\Marking\py2max>title My Test Batch File 
+
+C:\Users\User\Desktop\Marking\py2max>cd C:\maxima-5.41.0a\bin 
+
+C:\maxima-5.41.0a\bin>maxima.bat
+Maxima 5.41.0a_dirty http://maxima.sourceforge.net
+using Lisp SBCL 1.3.18
+Distributed under the GNU Public License. See the file COPYING.
+Dedicated to the memory of William Schelter.
+The function bug_report() provides bug reporting information.
+(%i1) 
+(%o1)                                  2
+(%i2) 
+(%o2)                                  3
+(%i3) 
+(%o3)                                  5
+(%i4) 
+
+%% Goal:
+We want to sort this, using python, into the following:
+output=[2,3,5]
+
+This can be read into python using list2txt.py
+Format: Single string
+Based on: https://www.computerhope.com/issues/ch001721.htm
+
+The ith desired output is between (%oi) and (\n)
+
+%%Search for a substring between two other strings:
+
+import re
+
+find stuff in between with (.)* or maybe +
+
+This does it! The central bit is mo.group(2):
+r'(\\(\\%o1\\))(.*)(\\n)'
+also works:
+'(\\(\\%o1\\))(.*)(\\\\n)'
+Replace 1 with your choice of number
+
+This is a basic fully functioning version
+It makes a new regex ('reg'), with a new number for each
+This can't be done using \d (as far as i can tell),
+because (od)ans\n repeatedly finds one of them:
+
+def readtxt(txtfile):
+	in_file = open(txtfile, "rt") # open file lorem.txt for reading text data
+	contents = in_file.read()         # read the entire file into a string variable
+	in_file.close()                   # close the file
+	return contents
+inputstring = readtxt('output.txt')
+n_outputs=3
+output_list=[None] * n_outputs
+pre = '(\(\%o'
+post = '\))(.*?)(\\n)'
+for i in range(n_outputs):
+    mid=str(i+1)
+    reg=pre+mid+post
+    myRegex = re.compile(reg)
+    mo = myRegex.search(inputstring)
+    output_list[i]=mo.group(2)
+    output_list[i]=output_list[i].replace(" ", "")
+

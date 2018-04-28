@@ -1,0 +1,18 @@
+
+C:\Users\User\Desktop\Marking\py2max>title My Test Batch File 
+
+C:\Users\User\Desktop\Marking\py2max>cd C:\maxima-5.41.0a\bin 
+
+C:\maxima-5.41.0a\bin>maxima.bat
+Maxima 5.41.0a_dirty http://maxima.sourceforge.net
+using Lisp SBCL 1.3.18
+Distributed under the GNU Public License. See the file COPYING.
+Dedicated to the memory of William Schelter.
+The function bug_report() provides bug reporting information.
+(%i1) 
+(%o1)                                  2
+(%i2) 
+(%o2)                                  3
+(%i3) 
+(%o3)                                  5
+(%i4) 

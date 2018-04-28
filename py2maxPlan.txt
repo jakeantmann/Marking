@@ -1,0 +1,11 @@
+Plan for writing Python code that can control Maxima:
+
+X) Write python code that writes a .mac file
+X) Make the .mac file include maxima code
+X) Run Maxima with the mac file as input
+X) Run Maxima with the mac file as input from an arbitrary location
+X) Make Maxima output a txt file
+X) Make Maxima output a txt file to a desired location
+6) Complete all of that from a python-built txt file
+
+For later: control this information in python to produce TeX files
